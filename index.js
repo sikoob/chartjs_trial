@@ -8,8 +8,6 @@ let dataSet = [660000000, 650000000, 610000000, 640000000]; //define dataset to 
 
 let maxVal = Math.max(...dataSet);      //'...' als arr.reduce; define max. value in dataset to define height of y-axes
 
-let minVal = Math.min(...dataSet);  //min. Val to determine which configuration for axis is needed later on
-
 let maxValCeil = Math.ceil(maxVal/stepSize)*stepSize; //format max. Val to fit stepsize
 
 let lowerAxesMax = Math.ceil((maxVal/10)/stepSize)*stepSize; //define max. value for the bottom y-axis
