@@ -1,0 +1,16 @@
+{
+  "name": "chartjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chart.js": "^3.7.0",
+    "jquery": "^3.6.0",
+    "patternomaly": "^1.3.2"
+  }
+}
