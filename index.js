@@ -6,7 +6,11 @@ let dataSet = [670000000, 660000000, 650000000, 655000000, 650000000];     //dat
 
 let maxVal = Math.max(...dataSet);                              //max. value in dataset to define height of y-axes and way of chart setup
 
+let minVal = Math.min(...dataSet);                              //min. value to determine minimal value displayed for upper axis in dataset
+
 let labelYears = ['2016','2017','2018', '2019', '2020'];        //variable for years to be displayed for easier modification
+
+let dataSetUsed = [];                                           //empty array to make sure that values are later displayed correctly on axes
 
 let stepSizeLower = "";                                         //variable for step size for lower axis, empty because defined later in if-statement dependent on chart setup
 
@@ -35,18 +39,36 @@ if (maxVal > 100000000) {                                       //chooses chart 
 
     stepSizeLower = 50000000;                                        //define step size for lower axis
 
-    stepSizeUpper = 25000000;                                       //define step size for upper axis
+    stepSizeUpper = 20000000;                                       //define step size for upper axis
 
     maxValCeil = Math.ceil(maxVal/stepSizeUpper)*stepSizeUpper;           //format max. Val to fit stepsize for upper axis
 
     lowerAxesMax = Math.ceil((maxVal/10)/stepSizeLower)*stepSizeLower;    //define max. value for the lower y-axis
 
-    upperAxesMin = Math.floor((maxVal-maxVal/15)/stepSizeUpper)*stepSizeUpper; //define starting point for upper y-axis
+    //checking whether minVal in data set is larger than max. displayed value for lower axis
+    if (minVal > lowerAxesMax) {
+        upperAxesMin = Math.floor((minVal)/stepSizeUpper)*stepSizeUpper;   //if minVal is larger than display upper axis min displayed value dependent on minVal
+    } else {
+        upperAxesMin = Math.floor((maxVal-maxVal/15)/stepSizeUpper)*stepSizeUpper; //define starting point for upper y-axis arbitrary when minVal is smaller than lower axis max. displayed value
+    };
+
+    //checking whether any datapoint in dataset should be displayed in lower axis or all are displayed within the area for the upper axis
+    for (let i = 0; i < dataSet.length; i++) {
+        if (dataSet[i] < lowerAxesMax) {        //checking if any data point should be displayed with the lower axis
+            dataSetUsed[i] = null;              //if yes, then do not include datapoint in data set for upper axis
+        } else {                                
+            dataSetUsed[i] = dataSet[i];        //if not, data set for upper axis takes value from input data set
+        };
+    };
 
     //looping through labelYears to add data to filler and lower axis data setup, consistend data for both variables
     for (let i = 0; i < labelYears.length; i++) {
         dataFiller[i] = 1;
-        lowerData[i] = lowerAxesMax;
+        if (dataSet[i] < lowerAxesMax) {        //checking if any data point should be displayed with the lower axis
+            lowerData[i] = dataSet[i];          //if yes, take data point that should be displayed in lower axis
+        } else {                                
+            lowerData[i] = lowerAxesMax;        //if not, take determined lowerAxesMax value
+        };
     };
 
     //data setup for chart
@@ -57,7 +79,7 @@ if (maxVal > 100000000) {                                       //chooses chart 
             //expense data to be displayed, changes dependent on data input
             label: 'yearly expense',
             yAxisID: 'upper',
-            data: dataSet,                                      //data to be used
+            data: dataSetUsed,                                      //data to be used
             backgroundColor: [
                 'rgba(18, 50, 80, 0.2)'
 
